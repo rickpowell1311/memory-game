@@ -1,18 +1,14 @@
 import { Controller, Get, Post, Delete, Param, HttpCode } from '@nestjs/common';
-import { RetrievePlayerResponse } from './endpoints/retrieve_player';
+import { RetrievePlayerHandler, RetrievePlayerResponse } from './endpoints/retrieve_player';
 import { CreateGameResponse } from './endpoints/create_game';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor() {}
+  constructor(private retrievePlayer: RetrievePlayerHandler) {}
 
   @Get('/:gamer_tag')
   getPlayer(@Param() params: { gamer_tag: string }): RetrievePlayerResponse {
-    // Stub response
-    return {
-      gamer_tag: params.gamer_tag,
-      high_score: 100
-    }
+    return this.retrievePlayer.Handle(params.gamer_tag);
   }
 
   @Delete('/:gamer_tag')
