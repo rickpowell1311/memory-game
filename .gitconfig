@@ -1,0 +1,9 @@
+[alias]
+    tcommit = !TortoiseGitProc /command:commit /path:.
+    tlog = !TortoiseGitProc /command:log /path:.
+    tresolve = !TortoiseGitProc /command:resolve /path:.
+    rb = rebase
+    rbc = rebase --continue
+    pr = !start "https://github.com/rickpowell1311/memory-game/compare/`git branch --show-current`"
+    cp = cherry-pick
+    
