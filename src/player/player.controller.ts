@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Delete, Param, HttpCode } from '@nestjs/common';
-import { RetrievePlayerResponse } from './endpoints/retrieve-player';
-import { CreateGameResponse } from './endpoints/create-game';
+import { RetrievePlayerResponse } from './endpoints/retrieve_player';
+import { CreateGameResponse } from './endpoints/create_game';
 
 @Controller('api/player')
 export class PlayerController {
