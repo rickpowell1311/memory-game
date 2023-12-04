@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Delete, Param, HttpCode } from '@nestjs/common';
 import { RetrievePlayerHandler, RetrievePlayerResponse } from './endpoints/retrieve_player';
-import { CreateGameResponse } from './endpoints/create_game';
 
 @Controller('api/player')
 export class PlayerController {
@@ -18,12 +17,5 @@ export class PlayerController {
 
   @Post('/:gamer_tag/reset-high-score')
   resetHighScore(@Param() params: { gamer_tag: string }) {
-  }
-    
-  @Post('/:gamer_tag/create-game')
-  createGame(@Param() params: { gamer_tag: string }): CreateGameResponse {
-    return {
-      game_id: 1
-    }
   }
 }

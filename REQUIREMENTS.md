@@ -33,9 +33,9 @@ Again, and for simplicity, there is no authentication in the API.
 
 `DELETE /api/player/{gamer_tag}` - Deletes the player with the specified gamer_tag
 
-`POST /api/player{gamer_tag}/reset-high-score` - Resets the high score for the player with the specified gamer_tag
+`POST /api/player/{gamer_tag}/reset-high-score` - Resets the high score for the player with the specified gamer_tag
 
-`POST /api/player/{gamer_tag}/create-game` - Creates a game for the gamer with the specified gamer_tag. The request has an empty body. The response returns a game_id, which can be used to retrieve the game items.
+`POST /api/game/create/{gamer_tag}` - Creates a game for the gamer with the specified gamer_tag. The request has an empty body. The response returns a game_id, which can be used to retrieve the game items.
 
 `GET /api/game/{game_id}` - Retrieves the game items for a specified game_id. Items are returned, and if the game is complete, a score will also be returned.
 
