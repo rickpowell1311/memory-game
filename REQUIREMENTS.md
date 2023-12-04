@@ -39,7 +39,7 @@ Again, and for simplicity, there is no authentication in the API.
 
 `GET /api/game/{game_id}` - Retrieves the game items for a specified game_id. Items are returned, and if the game is complete, a score will also be returned.
 
-`POST /api/game/{game_id}` - The player posts their answers for a specified game_id. The score is calculated for the game. The response is empty
+`PUT /api/game/{game_id}` - The player gives their answers for a specified game_id. The score is calculated for the game. The response is empty
 
 ## Running the API & Deployment
 
