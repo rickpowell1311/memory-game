@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PlayerRepository } from "../data_access/player_repository";
+import { PlayerRepository } from "../../core/data_access/player_repository";
 
 export interface RetrievePlayerResponse {
     gamer_tag: string;
