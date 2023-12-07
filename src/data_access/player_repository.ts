@@ -1,24 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
 import { Player } from '../domain/player';
 
 @Injectable()
 export class PlayerRepository {
-    #store: Array<Entity>;
+    private store: Array<Entity>;
 
     constructor() {
-        this.#store = [];
+        this.store = [];
     }
 
     add(player: Player) {
-        this.#store.push(Entity.mapFromDomain(player))
+        this.store.push(Entity.mapFromDomain(player))
     }
 
     find(gamer_tag: string): Player {
-        return Entity.mapToDomain(this.#store.find(player => player.gamer_tag === gamer_tag));
+        return Entity.mapToDomain(this.store.find(player => player.gamer_tag === gamer_tag));
     }
 
     delete(player: Player) {
-        this.#store = this.#store.filter(p => p.gamer_tag !== player.get_gamer_tag());
+        this.store = this.store.filter(p => p.gamer_tag !== player.get_gamer_tag());
     }
 }
 

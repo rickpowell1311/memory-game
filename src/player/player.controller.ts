@@ -1,21 +1,25 @@
-import { Controller, Get, Post, Delete, Param, HttpCode } from '@nestjs/common';
-import { RetrievePlayerHandler, RetrievePlayerResponse } from './endpoints/retrieve_player';
+import { Controller, Get, Delete, Param, HttpCode, Put } from '@nestjs/common';
+import { RetrievePlayerHandler } from './retrieve_player';
+import { ResetHighScoreHandler } from './reset_high_score';
+import { DeletePlayerHandler } from './delete_player';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor(private retrievePlayer: RetrievePlayerHandler) {}
+  constructor(private retrievePlayer: RetrievePlayerHandler, private resetHighScoreHandler: ResetHighScoreHandler, private deletePlayerHandler: DeletePlayerHandler) {}
 
   @Get('/:gamer_tag')
-  getPlayer(@Param() params: { gamer_tag: string }): RetrievePlayerResponse {
-    return this.retrievePlayer.Handle(params.gamer_tag);
+  getPlayer(@Param() params: { gamer_tag: string }) {
+    return this.retrievePlayer.handle({ gamer_tag: params.gamer_tag });
   }
 
   @Delete('/:gamer_tag')
   @HttpCode(204)
   deletePlayer(@Param() params: { gamer_tag: string }) {
+    return this.deletePlayerHandler.handle({ gamer_tag: params.gamer_tag });
   }
 
-  @Post('/:gamer_tag/reset-high-score')
+  @Put('/:gamer_tag/reset-high-score')
   resetHighScore(@Param() params: { gamer_tag: string }) {
+    return this.resetHighScoreHandler.handle({ gamer_tag: params.gamer_tag });
   }
 }

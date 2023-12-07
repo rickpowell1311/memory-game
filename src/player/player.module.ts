@@ -1,13 +1,21 @@
 import { Module } from '@nestjs/common';
+import { DataAccessModule } from '../data_access/data_access.module';
 import { PlayerController } from './player.controller';
-import { PlayerRepository } from '../core/data_access/player_repository';
-import { RetrievePlayerHandler } from './endpoints/retrieve_player';
+import { RetrievePlayerHandler } from './retrieve_player';
+import { DeletePlayerHandler } from './delete_player';
+import { ResetHighScoreHandler } from './reset_high_score';
 
 @Module({
-  controllers: [PlayerController],
+  imports: [
+    DataAccessModule
+  ],
+  controllers: [
+    PlayerController
+  ],
   providers: [
-    PlayerRepository,
-    RetrievePlayerHandler
+    RetrievePlayerHandler,
+    DeletePlayerHandler,
+    ResetHighScoreHandler
   ]
 })
 export class PlayerModule {}

@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PlayerRepository } from "../../core/data_access/player_repository";
+import { PlayerRepository } from "../data_access/player_repository";
+
+export interface RetrievePlayerRequest {
+    gamer_tag: string;
+}
 
 export interface RetrievePlayerResponse {
     gamer_tag: string;
@@ -11,11 +15,11 @@ export class RetrievePlayerHandler {
     constructor(private repository: PlayerRepository) {
     }
 
-    Handle(gamer_tag: string): RetrievePlayerResponse {
-        const player = this.repository.find(gamer_tag);
+    handle(request: RetrievePlayerRequest): RetrievePlayerResponse {
+        const player = this.repository.find(request.gamer_tag);
 
         if (!player) {
-            throw new NotFoundException(`Player ${gamer_tag} not found`);
+            throw new NotFoundException(`Player ${request.gamer_tag} not found`);
         }
 
         return {

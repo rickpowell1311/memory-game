@@ -1,18 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlayerController } from './player.controller';
-import { RetrievePlayerHandler } from './endpoints/retrieve_player';
-import { PlayerRepository } from '../core/data_access/player_repository';
+import { AppModule } from '../app.module';
 
 describe('PlayerController', () => {
   let controller: PlayerController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [PlayerController],
-      providers: [RetrievePlayerHandler, PlayerRepository]
+      imports: [AppModule]
     }).compile();
 
-    controller = module.get<PlayerController>(PlayerController);
+    controller = await module.resolve(PlayerController);
   });
 
   it('should be defined', () => {
