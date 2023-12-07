@@ -33,14 +33,28 @@ export class Game {
 
             this.score += answerScore;
         }
+
+        this.answers = items;
+    }
+
+    public getId() {
+        return this.id;
     }
 
     public getItems() {
-        return this.items.map(x => x);
+        return this.items;
+    }
+
+    public getAnswers() {
+        return this.answers;
     }
 
     public getScore() {
         return this.score;
+    }
+
+    public getStatus() {
+        return this.answers ? "Completed" : "Started";
     }
 
     private static generateItems(number: number) {

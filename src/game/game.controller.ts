@@ -5,7 +5,10 @@ import { CreateGameHandler, CreateGameResponse } from './create_game';
 
 @Controller('api/game')
 export class GameController {
-  constructor(private createGameHandler: CreateGameHandler, private completeGameHandler: CompleteGameHandler, private retrieveGameHandler: RetrieveGameHandler) {}
+  constructor(
+    private createGameHandler: CreateGameHandler, 
+    private completeGameHandler: CompleteGameHandler, 
+    private retrieveGameHandler: RetrieveGameHandler) {}
 
   @Post('create/:gamer_tag')
   @HttpCode(201)
