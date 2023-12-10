@@ -41,6 +41,10 @@ export class Game {
         return this.id;
     }
 
+    public getGamerTag() {
+        return this.gamer_tag;
+    }
+
     public getItems() {
         return this.items;
     }

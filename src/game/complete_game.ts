@@ -1,5 +1,6 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { GameRepository } from "../data_access/game_repository";
+import { PlayerRepository } from "../data_access/player_repository";
 
 export interface CompleteGameRequest {
     game_id: string;
@@ -12,8 +13,9 @@ export interface CompleteGameAnswerRequest {
 }
 
 export class CompleteGameHandler {
-    constructor(@Inject(GameRepository) private gameRepository: GameRepository) {
-
+    constructor(
+        @Inject(GameRepository) private gameRepository: GameRepository,
+        @Inject(PlayerRepository) private playerRepository: PlayerRepository) {
     }
 
     public handle(request: CompleteGameRequest): void {
@@ -23,6 +25,7 @@ export class CompleteGameHandler {
             throw new NotFoundException(`Game ${request.game_id} not found`);
         }
 
+        // Ideally this would be part of one unit of work.
         game.complete(request.answers.map(x => {
             return {
                 order: x.order,
@@ -31,5 +34,12 @@ export class CompleteGameHandler {
         }));
 
         this.gameRepository.update(game);
+
+        let player = this.playerRepository.find(game.getGamerTag());
+
+        if (player) {
+            player.record_score(game.getScore());
+            this.playerRepository.update(player);
+        }
     }
 }

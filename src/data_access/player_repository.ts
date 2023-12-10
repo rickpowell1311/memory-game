@@ -17,6 +17,10 @@ export class PlayerRepository {
         return Entity.mapToDomain(this.store.find(player => player.gamer_tag === gamer_tag));
     }
 
+    update(player: Player) {
+        this.store = this.store.map(p => p.gamer_tag === player.get_gamer_tag() ? Entity.mapFromDomain(player) : p);
+    }
+
     delete(player: Player) {
         this.store = this.store.filter(p => p.gamer_tag !== player.get_gamer_tag());
     }

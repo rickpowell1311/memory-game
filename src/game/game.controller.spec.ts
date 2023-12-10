@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameController } from './game.controller';
 import { AppModule } from '../app.module';
+import { PlayerRepository } from '../data_access/player_repository';
 
 describe('GameController', () => {
   let controller: GameController;
+  let player_repository: PlayerRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -11,6 +13,7 @@ describe('GameController', () => {
     }).compile();
 
     controller = module.get<GameController>(GameController);
+    player_repository = module.get<PlayerRepository>(PlayerRepository);
   });
 
   it('should be defined', () => {
@@ -55,6 +58,11 @@ describe('GameController', () => {
         const response = controller.getGame({ game_id });
         expect(response.score).toBeDefined();
       });
+
+      it('should set a new high score for the player', () => {
+        const player = player_repository.find('test_gamer');
+        expect(player.get_high_score()).toBeDefined();
+      })
     });
   })
 
