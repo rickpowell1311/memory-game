@@ -11,13 +11,20 @@ services:
   server:
     build:
       context: .
+      target: dev
     environment:
       NODE_ENV: production
     ports:
       - 3000:3000
+      - 9229:9229
     depends_on:
       db:
         condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /usr/src/app/src
   db:
     image: postgres
     restart: always
