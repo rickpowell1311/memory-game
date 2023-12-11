@@ -3,21 +3,25 @@ import { GameModule } from './game/game.module';
 import { PlayerModule } from './player/player.module';
 import { DataAccessModule } from './data_access/data_access.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import typeorm from './data_access/typeorm.config';
 
 @Module({
   imports: [
     GameModule, 
     PlayerModule,
     DataAccessModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'db',
-      port: 5432,
-      database: 'memorygame',
-      username: 'postgres',
-      password: 'Password123!',
-      entities: [],
-      synchronize: true
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm]
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        let config = configService.get('typeorm');
+        config.migrations = [];
+        return config;
+      }
     })
   ]
 })
