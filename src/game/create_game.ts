@@ -1,7 +1,7 @@
 import { Game } from "../domain/game";
-import { GameRepository } from "../data_access/game_repository";
+import { GameRepository } from "../data_access/game.repository";
 import { Inject } from "@nestjs/common";
-import { PlayerRepository } from "../data_access/player_repository";
+import { PlayerRepository } from "../data_access/player.repository";
 import { Player } from "../domain/player";
 
 export interface CreateGameRequest {
@@ -19,9 +19,9 @@ export class CreateGameHandler {
         @Inject(PlayerRepository) private playerRepository: PlayerRepository) {
     }
 
-    public handle(request: CreateGameRequest): CreateGameResponse {
+    public async handle(request: CreateGameRequest): Promise<CreateGameResponse> {
 
-        const player = this.playerRepository.find(request.gamer_tag);
+        const player = await this.playerRepository.find(request.gamer_tag);
 
         // Ideally these data access changes would be one unit of work.
         if (!player) {

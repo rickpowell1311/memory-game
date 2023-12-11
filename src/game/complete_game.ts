@@ -1,6 +1,6 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { GameRepository } from "../data_access/game_repository";
-import { PlayerRepository } from "../data_access/player_repository";
+import { GameRepository } from "../data_access/game.repository";
+import { PlayerRepository } from "../data_access/player.repository";
 
 export interface CompleteGameRequest {
     game_id: string;
@@ -18,8 +18,8 @@ export class CompleteGameHandler {
         @Inject(PlayerRepository) private playerRepository: PlayerRepository) {
     }
 
-    public handle(request: CompleteGameRequest): void {
-        const game = this.gameRepository.find(request.game_id);
+    public async handle(request: CompleteGameRequest): Promise<void> {
+        const game = await this.gameRepository.find(request.game_id);
 
         if (!game) {
             throw new NotFoundException(`Game ${request.game_id} not found`);
@@ -35,7 +35,7 @@ export class CompleteGameHandler {
 
         this.gameRepository.update(game);
 
-        let player = this.playerRepository.find(game.getGamerTag());
+        let player = await this.playerRepository.find(game.getGamerTag());
 
         if (player) {
             player.record_score(game.getScore());

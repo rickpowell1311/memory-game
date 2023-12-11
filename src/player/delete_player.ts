@@ -3,7 +3,7 @@ export interface DeletePlayerRequest {
 }
 
 export class DeletePlayerHandler {
-    public handle(request: DeletePlayerRequest): void {
+    async handle(request: DeletePlayerRequest): Promise<void> {
         return;
     }
 }

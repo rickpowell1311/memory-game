@@ -12,17 +12,17 @@ export class GameController {
 
   @Post('create/:gamer_tag')
   @HttpCode(201)
-  createGame(@Param() params: { gamer_tag: string }): CreateGameResponse {
-    return this.createGameHandler.handle({ gamer_tag: params.gamer_tag, number_of_items: 5 });
+  async createGame(@Param() params: { gamer_tag: string }): Promise<CreateGameResponse> {
+    return await this.createGameHandler.handle({ gamer_tag: params.gamer_tag, number_of_items: 5 });
   }
 
   @Get('/:game_id')
-  getGame(@Param() params: { game_id: string }): RetrieveGameResponse {
-    return this.retrieveGameHandler.handle({ game_id: params.game_id });
+  async getGame(@Param() params: { game_id: string }): Promise<RetrieveGameResponse> {
+    return await this.retrieveGameHandler.handle({ game_id: params.game_id });
   }
   
   @Put('/:game_id')
-  completeGame(@Param() params: { game_id: string }, @Body() body: CompleteGameRequest) {
-    return this.completeGameHandler.handle({ ...body, game_id: params.game_id });
+  async completeGame(@Param() params: { game_id: string }, @Body() body: CompleteGameRequest) {
+    return await this.completeGameHandler.handle({ ...body, game_id: params.game_id });
   }
 }

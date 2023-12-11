@@ -1,5 +1,5 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { GameRepository } from "../data_access/game_repository";
+import { GameRepository } from "../data_access/game.repository";
 
 export interface RetrieveGameRequest {
     game_id: string;
@@ -23,8 +23,8 @@ export class RetrieveGameHandler {
     constructor(@Inject(GameRepository) private gameRepository: GameRepository) {
     }
 
-    public handle(request: RetrieveGameRequest): RetrieveGameResponse {
-        const game = this.gameRepository.find(request.game_id);
+    public async handle(request: RetrieveGameRequest): Promise<RetrieveGameResponse> {
+        const game = await this.gameRepository.find(request.game_id);
 
         if (!game) {
             throw new NotFoundException(`Game ${request.game_id} not found`);

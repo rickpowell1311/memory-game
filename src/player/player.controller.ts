@@ -8,18 +8,18 @@ export class PlayerController {
   constructor(private retrievePlayer: RetrievePlayerHandler, private resetHighScoreHandler: ResetHighScoreHandler, private deletePlayerHandler: DeletePlayerHandler) {}
 
   @Get('/:gamer_tag')
-  getPlayer(@Param() params: { gamer_tag: string }) {
-    return this.retrievePlayer.handle({ gamer_tag: params.gamer_tag });
+  async getPlayer(@Param() params: { gamer_tag: string }) {
+    return await this.retrievePlayer.handle({ gamer_tag: params.gamer_tag });
   }
 
   @Delete('/:gamer_tag')
   @HttpCode(204)
-  deletePlayer(@Param() params: { gamer_tag: string }) {
-    return this.deletePlayerHandler.handle({ gamer_tag: params.gamer_tag });
+  async deletePlayer(@Param() params: { gamer_tag: string }) {
+    return await this.deletePlayerHandler.handle({ gamer_tag: params.gamer_tag });
   }
 
   @Put('/:gamer_tag/reset-high-score')
-  resetHighScore(@Param() params: { gamer_tag: string }) {
-    return this.resetHighScoreHandler.handle({ gamer_tag: params.gamer_tag });
+  async resetHighScore(@Param() params: { gamer_tag: string }) {
+    return await this.resetHighScoreHandler.handle({ gamer_tag: params.gamer_tag });
   }
 }

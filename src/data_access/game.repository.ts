@@ -9,15 +9,20 @@ export class GameRepository {
         this.store = [];
     }
 
-    add(game: Game) {
+    async add(game: Game) {
         this.store.push(game);
+        
+        return new Promise<void>(() => {});
     }
 
-    update(game: Game) {
+    async update(game: Game) {
         this.store = this.store.map(g => g.getId() === game.getId() ? game : g);
+
+        return new Promise<void>(() => {});
     }
 
-    find(id: string): Game {
-        return this.store.find(game => game.getId() === id);
+    async find(id: string): Promise<Game> {
+        const game = this.store.find(game => game.getId() === id);
+        return new Promise<Game>(() => game);
     }
 }

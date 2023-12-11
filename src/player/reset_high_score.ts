@@ -3,7 +3,7 @@ export interface ResetHighScoreRequest {
 }
 
 export class ResetHighScoreHandler {
-    public handle(request: ResetHighScoreRequest): void {
+    async handle(request: ResetHighScoreRequest): Promise<void> {
         return;
     }
 }
