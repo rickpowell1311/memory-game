@@ -1,8 +1,9 @@
 import { Game } from "../domain/game";
-import { GameRepository } from "../data_access/game.repository";
 import { Inject } from "@nestjs/common";
-import { PlayerRepository } from "../data_access/player.repository";
 import { Player } from "../domain/player";
+import { DataSource } from "typeorm";
+import { PlayerEntity } from "../data_access/player.entity";
+import { GameEntity } from "src/data_access/game.entity";
 
 export interface CreateGameRequest {
     gamer_tag: string;
@@ -14,22 +15,35 @@ export interface CreateGameResponse {
 }
 
 export class CreateGameHandler {
-    constructor(
-        @Inject(GameRepository) private gameRepository: GameRepository,
-        @Inject(PlayerRepository) private playerRepository: PlayerRepository) {
+    constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
 
     public async handle(request: CreateGameRequest): Promise<CreateGameResponse> {
 
-        const player = await this.playerRepository.find(request.gamer_tag);
+        const playerEntity = await this.dataSource.getRepository(PlayerEntity)
+            .createQueryBuilder("player")
+            .where("player.gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
+            .getOne();
 
-        // TODO: These data access changes should be one unit of work (transaction)
-        if (!player) {
-            await this.playerRepository.add(new Player(request.gamer_tag));
-        }
+        let game: Game;
+        await this.dataSource.transaction(async manager => { 
+            if (!playerEntity) {
+                const player = new Player(request.gamer_tag);
 
-        const game = Game.initialize(request.gamer_tag, request.number_of_items);
-        await this.gameRepository.add(game);
+                await manager.createQueryBuilder()
+                    .insert()
+                    .into(PlayerEntity)
+                    .values(PlayerEntity.mapFromDomain(player))
+                    .execute();
+            }
+
+            game = Game.initialize(request.gamer_tag, request.number_of_items);
+            await manager.createQueryBuilder()
+                .insert()
+                .into(GameEntity)
+                .values(GameEntity.mapFromDomain(game))
+                .execute();
+        });
 
         return {
             game_id: game.getId()

@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { PlayerRepository } from "../data_access/player.repository";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { PlayerEntity } from "../data_access/player.entity";
+import { DataSource } from "typeorm";
 
 export interface RetrievePlayerRequest {
     gamer_tag: string;
@@ -12,19 +13,23 @@ export interface RetrievePlayerResponse {
 
 @Injectable()
 export class RetrievePlayerHandler {
-    constructor(private repository: PlayerRepository) {
+    constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
 
     async handle(request: RetrievePlayerRequest): Promise<RetrievePlayerResponse> {
-        const player = await this.repository.find(request.gamer_tag);
 
-        if (!player) {
+        const entity = await this.dataSource.getRepository(PlayerEntity)
+            .createQueryBuilder("player")
+            .where("player.gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
+            .getOne();
+
+        if (!entity) {
             throw new NotFoundException(`Player ${request.gamer_tag} not found`);
         }
 
         return {
-            gamer_tag: player.get_gamer_tag(),
-            high_score: player.get_high_score()
+            gamer_tag: entity.gamer_tag,
+            high_score: entity.high_score
         }
     }
 }

@@ -1,5 +1,6 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { GameRepository } from "../data_access/game.repository";
+import { GameEntity } from "../data_access/game.entity";
+import { DataSource } from "typeorm";
 
 export interface RetrieveGameRequest {
     game_id: string;
@@ -20,32 +21,35 @@ export interface RetrieveGameItemResponse {
 
 export class RetrieveGameHandler {
 
-    constructor(@Inject(GameRepository) private gameRepository: GameRepository) {
+    constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
 
     public async handle(request: RetrieveGameRequest): Promise<RetrieveGameResponse> {
-        const game = await this.gameRepository.find(request.game_id);
+        const entity = await this.dataSource.getRepository(GameEntity)
+            .createQueryBuilder("player")
+            .where("id = :id", { id: request.game_id })
+            .getOne();
 
-        if (!game) {
+        if (!entity) {
             throw new NotFoundException(`Game ${request.game_id} not found`);
         }
 
         return {
-            game_id: game.getId(),
-            status: game.getStatus(),
-            items: game.getItems().map(x => {
+            game_id: entity.id,
+            status: entity.game_answers && entity.game_answers.items.length > 0 ? "Completed" : "Started",
+            items: entity.game_answers.items.map(x => {
                 return {
                     order: x.order,
                     item: x.description
                 } as RetrieveGameItemResponse;
             }),
-            answers: game.getAnswers()?.map(x => {
+            answers: entity.game_answers.items.map(x => {
                 return {
                     order: x.order,
                     item: x.description
                 } as RetrieveGameItemResponse;
             }),
-            score: game.getScore()
+            score: entity.score
         } as RetrieveGameResponse;
     }
 }

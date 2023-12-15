@@ -1,11 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameController } from './game.controller';
 import { AppModule } from '../app.module';
-import { PlayerRepository } from '../data_access/player.repository';
+import { DataSource } from 'typeorm';
+import { PlayerEntity } from '../data_access/player.entity';
+import { newId } from '../domain/id';
 
 describe('GameController', () => {
   let controller: GameController;
-  let player_repository: PlayerRepository;
+  let data_source: DataSource;
+  let gamer_tag: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -13,7 +16,8 @@ describe('GameController', () => {
     }).compile();
 
     controller = module.get<GameController>(GameController);
-    player_repository = module.get<PlayerRepository>(PlayerRepository);
+    data_source = module.get<DataSource>(DataSource);
+    gamer_tag = `test_gamer_${newId()}`;
   });
 
   it('should be defined', () => {
@@ -21,7 +25,7 @@ describe('GameController', () => {
   });
 
   it('should be able to create a game', async () => {
-    const response = await controller.createGame({ gamer_tag: 'test_gamer' });
+    const response = await controller.createGame({ gamer_tag: gamer_tag });
     expect(response.game_id).toBeDefined();
     expect(response.game_id.length).toBeGreaterThan(0);
   });
@@ -30,7 +34,7 @@ describe('GameController', () => {
     let game_id: string;
 
     beforeEach(async () => {
-      const response = await controller.createGame({ gamer_tag: 'test_gamer' });
+      const response = await controller.createGame({ gamer_tag: gamer_tag });
       game_id = response.game_id;
     });
 
@@ -60,14 +64,16 @@ describe('GameController', () => {
       });
 
       it('should set a new high score for the player', async () => {
-        const player = await player_repository.find('test_gamer');
-        expect(player.get_high_score()).toBeDefined();
+        const player = await data_source.getRepository(PlayerEntity)
+          .createQueryBuilder("player")
+          .where("player.gamer_tag = :gamer_tag", { gamer_tag: gamer_tag })
+          .getOne();
+        expect(player.high_score).toBeDefined();
       })
     });
   })
 
   it('should be able to retrieve a game', async () => {
-    const gamer_tag = 'test_gamer';
     const createResponse = await controller.createGame({ gamer_tag });
     const response = await controller.getGame({ game_id: createResponse.game_id });
     expect(response.game_id).toBe(createResponse.game_id);
