@@ -25,7 +25,8 @@ export class CreateGameHandler {
             .where("player.gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
             .getOne();
 
-        let game: Game;
+        let game_id = "";
+
         await this.dataSource.transaction(async manager => { 
             if (!playerEntity) {
                 const player = new Player(request.gamer_tag);
@@ -37,16 +38,19 @@ export class CreateGameHandler {
                     .execute();
             }
 
-            game = Game.initialize(request.gamer_tag, request.number_of_items);
+            const game = Game.initialize(request.gamer_tag, request.number_of_items);
+            const gameEntity = GameEntity.mapFromDomain(game);
             await manager.createQueryBuilder()
                 .insert()
                 .into(GameEntity)
-                .values(GameEntity.mapFromDomain(game))
+                .values(gameEntity)
                 .execute();
+
+            game_id = gameEntity.id;
         });
 
         return {
-            game_id: game.getId()
+            game_id: game_id
         } as CreateGameResponse;
     }
 }

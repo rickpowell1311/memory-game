@@ -33,6 +33,10 @@ export class CompleteGameHandler {
             .where("player.gamer_tag = :gamer_tag", { gamer_tag: gameEntity.gamer_tag })
             .getOne();
 
+        if (!playerEntity) {
+            throw new NotFoundException(`Player ${gameEntity.gamer_tag} not found`);
+        }
+
         let game = gameEntity.mapToDomain();
         game.complete(request.answers.map(x => {
             return {
@@ -41,7 +45,7 @@ export class CompleteGameHandler {
             }
         }));
         let player = playerEntity.mapToDomain();
-        player.recordScore(game.getScore());
+        player.recordScore(gameEntity.score ?? 0);
 
         await this.dataSource.transaction(async manager => {
             manager.createQueryBuilder()

@@ -36,16 +36,16 @@ export class GameEntity {
             id: game.getId(),
             gamer_tag: game.getGamerTag(),
             game_items: {
-                items: game.getItems().map(x => {
+                items: game.getItems()?.map(x => {
                     return {
                         order: x.order,
                         description: x.description
                     } as GameItem;
                 })
             },
-            game_answers: game.getAnswers()?.length > 0 
+            game_answers: game.getAnswers()?.length ?? 0 > 0 
                 ? {
-                    items: game.getAnswers().map(x => {
+                    items: game.getAnswers()?.map(x => {
                         return {
                             order: x.order,
                             description: x.description

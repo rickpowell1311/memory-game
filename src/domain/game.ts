@@ -18,7 +18,7 @@ export class Game {
         const orderedAnswers = items
             .sort((a, b) => a.order > b.order ? 1 : (b.order > a.order ? -1 : 0));
 
-        const matches = this.items
+        const matches = (this.items ?? [])
             .sort((a, b) => a.order > b.order ? 1 : (b.order > a.order ? -1 : 0))
             .filter(x => items.some(y => Item.isDescriptionMatch(x, y)));
 
