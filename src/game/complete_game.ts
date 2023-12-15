@@ -25,7 +25,7 @@ export class CompleteGameHandler {
             throw new NotFoundException(`Game ${request.game_id} not found`);
         }
 
-        // Ideally this would be part of one unit of work.
+        // TODO: These data access changes should be one unit of work (transaction)
         game.complete(request.answers.map(x => {
             return {
                 order: x.order,

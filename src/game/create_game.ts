@@ -23,7 +23,7 @@ export class CreateGameHandler {
 
         const player = await this.playerRepository.find(request.gamer_tag);
 
-        // Ideally these data access changes would be one unit of work.
+        // TODO: These data access changes should be one unit of work (transaction)
         if (!player) {
             await this.playerRepository.add(new Player(request.gamer_tag));
         }
