@@ -5,11 +5,11 @@ import { DeletePlayerHandler } from './delete_player';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor(private retrievePlayer: RetrievePlayerHandler, private resetHighScoreHandler: ResetHighScoreHandler, private deletePlayerHandler: DeletePlayerHandler) {}
+  constructor(private retrievePlayerHandler: RetrievePlayerHandler, private resetHighScoreHandler: ResetHighScoreHandler, private deletePlayerHandler: DeletePlayerHandler) {}
 
   @Get('/:gamer_tag')
-  async getPlayer(@Param() params: { gamer_tag: string }) {
-    return await this.retrievePlayer.handle({ gamer_tag: params.gamer_tag });
+  async retrievePlayer(@Param() params: { gamer_tag: string }) {
+    return await this.retrievePlayerHandler.handle({ gamer_tag: params.gamer_tag });
   }
 
   @Delete('/:gamer_tag')
