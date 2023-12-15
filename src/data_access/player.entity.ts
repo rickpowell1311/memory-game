@@ -1,7 +1,6 @@
 import { Player } from '../domain/player';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-
 @Entity({ name: 'player' })
 export class PlayerEntity {
 
@@ -19,12 +18,10 @@ export class PlayerEntity {
         return {
             gamer_tag: player.get_gamer_tag(),
             high_score: player.get_high_score()
-        };
+        } as PlayerEntity;
     }
 
-    static mapToDomain(entity: PlayerEntity): Player {
-        return entity
-            ? new Player(entity.gamer_tag, entity.high_score)
-            : undefined;
+    mapToDomain(): Player {
+        return new Player(this.gamer_tag, this.high_score);
     }
 }

@@ -54,27 +54,25 @@ export class GameEntity {
                 }
                 : undefined,
             score: game.getScore()
-        };
+        } as GameEntity;
     }
 
-    static mapToDomain(entity: GameEntity): Game {
-        return entity
-            ? new Game(
-                entity.id,
-                entity.gamer_tag, 
-                entity.game_items.items.map(x => {
-                    return {
-                        order: x.order,
-                        description: x.description
-                    } as GameItem;
-                }),
-                entity.game_answers?.items?.map(x => {
-                    return {
-                        order: x.order,
-                        description: x.description
-                    } as GameItem;
-                }),
-                entity.score)
-            : undefined;
+    mapToDomain(): Game {
+        return new Game(
+            this.id,
+            this.gamer_tag, 
+            this.game_items.items.map(x => {
+                return {
+                    order: x.order,
+                    description: x.description
+                } as GameItem;
+            }),
+            this.game_answers?.items?.map(x => {
+                return {
+                    order: x.order,
+                    description: x.description
+                } as GameItem;
+            }),
+            this.score);
     }
 }

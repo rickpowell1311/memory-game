@@ -33,14 +33,14 @@ export class CompleteGameHandler {
             .where("player.gamer_tag = :gamer_tag", { gamer_tag: gameEntity.gamer_tag })
             .getOne();
 
-        let game = GameEntity.mapToDomain(gameEntity);
+        let game = gameEntity.mapToDomain();
         game.complete(request.answers.map(x => {
             return {
                 order: x.order,
                 description: x.item
             }
         }));
-        let player = PlayerEntity.mapToDomain(playerEntity);
+        let player = playerEntity.mapToDomain();
         player.record_score(game.getScore());
 
         await this.dataSource.transaction(async manager => {
