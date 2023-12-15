@@ -68,7 +68,7 @@ describe('GameController', () => {
           .createQueryBuilder("player")
           .where("player.gamer_tag = :gamer_tag", { gamer_tag: gamer_tag })
           .getOne();
-        expect(player.high_score).toBeDefined();
+        expect(player?.high_score).toBeDefined();
       })
     });
   })

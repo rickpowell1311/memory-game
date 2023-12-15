@@ -31,10 +31,10 @@ describe('Game', () => {
 
     it('Should have score = 3 * number of items when all answers correct', () => {
       let game = Game.initialize("test_gamer");
-      game.complete(game.getItems());
+      game.complete(game?.getItems() ?? []);
       const score = game.getScore();
 
-      expect(score).toBe(3 * game.getItems().length);
+      expect(score).toBe(3 * (game.getItems() ?? []).length);
     });
 
     it('Should have a score of 0 when all answers are incorrect', () => {

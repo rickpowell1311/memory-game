@@ -1,6 +1,8 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException, UsePipes } from "@nestjs/common";
 import { PlayerEntity } from "../data_access/player.entity";
 import { DataSource } from "typeorm";
+import { z } from "zod";
+import { ZodValidationPipe } from "src/validation.pipe";
 
 export interface RetrievePlayerRequest {
     gamer_tag: string;

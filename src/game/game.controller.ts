@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Put, Param, HttpCode } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Param, HttpCode, UsePipes } from '@nestjs/common';
 import { RetrieveGameHandler, RetrieveGameResponse } from './retrieve_game';
-import { CompleteGameHandler, CompleteGameRequest } from './complete_game';
+import { CompleteGameHandler, CompleteGameRequest, CompleteGameRequestValidator } from './complete_game';
 import { CreateGameHandler, CreateGameResponse } from './create_game';
+import { ZodValidationPipe } from '../validation.pipe';
 
 @Controller('api/game')
 export class GameController {
@@ -22,6 +23,7 @@ export class GameController {
   }
   
   @Put('/:game_id')
+  @UsePipes(new ZodValidationPipe(CompleteGameRequestValidator))
   async completeGame(@Param() params: { game_id: string }, @Body() body: CompleteGameRequest) {
     return await this.completeGameHandler.handle({ ...body, game_id: params.game_id });
   }

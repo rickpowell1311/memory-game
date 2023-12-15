@@ -2,11 +2,20 @@ import { Inject, NotFoundException } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { GameEntity } from "../data_access/game.entity";
 import { PlayerEntity } from "../data_access/player.entity";
+import { z } from "zod";
 
 export interface CompleteGameRequest {
     game_id: string;
     answers: Array<CompleteGameAnswerRequest>;
 }
+
+export const CompleteGameRequestValidator = z.object({
+    game_id: z.string().min(1).max(100),
+    answers: z.array(z.object({
+        order: z.number().positive(),
+        item: z.string().min(1).max(100)
+    }))
+});
 
 export interface CompleteGameAnswerRequest {
     order: number;

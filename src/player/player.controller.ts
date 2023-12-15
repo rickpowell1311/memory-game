@@ -1,7 +1,8 @@
-import { Controller, Get, Delete, Param, HttpCode, Put } from '@nestjs/common';
+import { Controller, Get, Delete, Param, HttpCode, Put, UsePipes } from '@nestjs/common';
 import { RetrievePlayerHandler } from './retrieve_player';
 import { ResetHighScoreHandler } from './reset_high_score';
 import { DeletePlayerHandler } from './delete_player';
+import { ZodValidationPipe } from 'src/validation.pipe';
 
 @Controller('api/player')
 export class PlayerController {
