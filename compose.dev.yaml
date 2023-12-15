@@ -1,0 +1,14 @@
+services:
+  server:
+    extends:
+      file: common-services.yaml
+      service: server
+  db:
+    extends:
+      file: common-services.yaml
+      service: db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+
