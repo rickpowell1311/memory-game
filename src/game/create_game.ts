@@ -25,11 +25,11 @@ export class CreateGameHandler {
 
         // Ideally these data access changes would be one unit of work.
         if (!player) {
-            this.playerRepository.add(new Player(request.gamer_tag));
+            await this.playerRepository.add(new Player(request.gamer_tag));
         }
 
         const game = Game.initialize(request.gamer_tag, request.number_of_items);
-        this.gameRepository.add(game);
+        await this.gameRepository.add(game);
 
         return {
             game_id: game.getId()

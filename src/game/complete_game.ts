@@ -33,13 +33,13 @@ export class CompleteGameHandler {
             }
         }));
 
-        this.gameRepository.update(game);
+        await this.gameRepository.update(game);
 
         let player = await this.playerRepository.find(game.getGamerTag());
 
         if (player) {
             player.record_score(game.getScore());
-            this.playerRepository.update(player);
+            await this.playerRepository.update(player);
         }
     }
 }

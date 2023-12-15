@@ -58,7 +58,7 @@ export class Game {
     }
 
     public getStatus() {
-        return this.answers ? "Completed" : "Started";
+        return this.answers && this.answers.length > 0 ? "Completed" : "Started";
     }
 
     private static generateItems(number: number) {

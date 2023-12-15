@@ -45,8 +45,8 @@ describe('GameController', () => {
     });
 
     describe('when completing a game', () => {
-      beforeEach(() => {
-        controller.completeGame({ game_id }, { game_id: game_id, answers: [{ item: "Whatever", order: 0 }]});
+      beforeEach(async () => {
+        await controller.completeGame({ game_id }, { game_id: game_id, answers: [{ item: "Whatever", order: 0 }]});
       });
 
       it('should have a status of Completed', async () => {
