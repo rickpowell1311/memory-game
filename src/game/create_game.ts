@@ -3,7 +3,7 @@ import { Inject } from "@nestjs/common";
 import { Player } from "../domain/player";
 import { DataSource } from "typeorm";
 import { PlayerEntity } from "../data_access/player.entity";
-import { GameEntity } from "src/data_access/game.entity";
+import { GameEntity } from "../data_access/game.entity";
 
 export interface CreateGameRequest {
     gamer_tag: string;
