@@ -2,13 +2,13 @@ export class Player {
     constructor(private gamer_tag: string, private high_score?: number) {
     }
 
-    record_score(score: number) {
+    recordScore(score: number) {
         if (!this.high_score || this.high_score < score) {
             this.high_score = score;
         }
     }
 
-    reset_high_score() {
+    resetHighScore() {
         this.high_score = undefined;
     }
 

@@ -22,17 +22,17 @@ describe('Player', () => {
     });
     
     it('Should not set a new high score when a lower score is recorded', () => {
-        player.record_score(4);
+        player.recordScore(4);
         expect(player.get_high_score()).toBe(5);
     });
 
     it('Should not change the high score when the same score is recorded', () => {
-        player.record_score(5);
+        player.recordScore(5);
         expect(player.get_high_score()).toBe(5);
     });
 
     it('Should set a new high score when a higher score is recorded', () => {
-        player.record_score(6);
+        player.recordScore(6);
         expect(player.get_high_score()).toBe(6);
     });
   })

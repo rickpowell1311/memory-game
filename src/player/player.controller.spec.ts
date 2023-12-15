@@ -25,6 +25,43 @@ describe('PlayerController', () => {
     expect(controller).toBeDefined();
   });
 
+  describe('when resetting a player\'s high score', () => {
+    let gamer_tag: string;
+    let game: Game;
+    let player: Player;
+
+    beforeEach(async () => {
+      gamer_tag = `test_gamer_${newId()}`;
+      game = Game.initialize(gamer_tag);
+      player = new Player(gamer_tag);
+
+      await data_source.transaction(async manager => {
+        await manager.createQueryBuilder()
+          .insert()
+          .into('player')
+          .values(PlayerEntity.mapFromDomain(player))
+          .execute();
+
+        await manager.createQueryBuilder()
+          .insert()
+          .into('game')
+          .values(GameEntity.mapFromDomain(game))
+          .execute();
+      })
+    });
+
+    it('the high score should be falsy', async () => {
+      await controller.resetHighScore({ gamer_tag });
+
+      const entity = await data_source.getRepository(PlayerEntity)
+        .createQueryBuilder('player')
+        .where('player.gamer_tag = :gamer_tag', { gamer_tag })
+        .getOne();
+
+      expect(entity?.high_score).toBeFalsy();
+    });
+  });
+
   describe('when deleting a player', () => {
     let gamer_tag: string;
     let game: Game;
