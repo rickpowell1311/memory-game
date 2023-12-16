@@ -3,8 +3,12 @@ services:
     extends:
       file: common-services.yaml
       service: server
+    env_file:
+      - ./.env.test
   db:
     extends:
       file: common-services.yaml
       service: db
+    env_file:
+      - ./.env.test
 

@@ -1,9 +1,13 @@
 services:
   server:
+    env_file:
+      - ./.env
     extends:
       file: common-services.yaml
       service: server
   db:
+    env_file:
+    - ./.env
     extends:
       file: common-services.yaml
       service: db

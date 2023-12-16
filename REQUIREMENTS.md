@@ -11,7 +11,7 @@ This game is a simple test of a player’s memory. A list of items are revealed 
 1. A gamer can play a game
    - A new game will generate and store a list of items in a certain order, and then return them to the player
    - A game is in a “Started” state when the items have been returned to the player, but the player has not yet submitted the items back.
-   - An item a player submits is correct if it is spelt spelt correctly (the case can be different).
+   - An item a player submits is correct if it is spelt correctly (the case can be different).
    - A game is in a “Complete” state when the items have been submitted back by the player.
    - Items cannot be submitted back for a specified game more than once.
    - When a game is completed, the player's score for that game should be calculated.
@@ -33,7 +33,7 @@ Again, and for simplicity, there is no authentication in the API.
 
 `DELETE /api/player/{gamer_tag}` - Deletes the player with the specified gamer_tag
 
-`POST /api/player/{gamer_tag}/reset-high-score` - Resets the high score for the player with the specified gamer_tag
+`PUT /api/player/{gamer_tag}/reset-high-score` - Resets the high score for the player with the specified gamer_tag
 
 `POST /api/game/create/{gamer_tag}` - Creates a game for the gamer with the specified gamer_tag. The request has an empty body. The response returns a game_id, which can be used to retrieve the game items.
 
