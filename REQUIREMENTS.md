@@ -43,12 +43,7 @@ Again, and for simplicity, there is no authentication in the API.
 
 ## Running the API & Deployment
 
-Docker compose will be used to spin up a running instance of a database and API when running the application locally. 
+Docker compose will be used to spin up a running instance of a database and API when running the application locally. There will also be a configuration to run a test suite using docker compose.
 
-This will:
-1. Spin up a database container
-1. Run a set of migrations for the schema against this database container
-1. Start up an API container
-
-The application will not be deployed to any cloud environment, however the API and migrations should be configurable such that they can connect to any database easily.
+The application will not be deployed to any cloud environment, however the API and migrations should be configurable such that they can connect to any database easily (e.g. .env file or similar).
 

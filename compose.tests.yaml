@@ -1,10 +1,24 @@
 services:
-  server:
+  test:
     extends:
       file: common-services.yaml
-      service: server
+      service: app
     env_file:
       - ./.env.test
+    build:
+      target: test
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  migrate:
+    extends:
+        file: common-services.yaml
+        service: migrate
+    env_file:
+      - ./.env.test
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     extends:
       file: common-services.yaml
