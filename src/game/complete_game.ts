@@ -10,9 +10,8 @@ export interface CompleteGameRequest {
 }
 
 export const CompleteGameRequestValidator = z.object({
-    game_id: z.string().min(1).max(100),
     answers: z.array(z.object({
-        order: z.number().positive(),
+        order: z.number(),
         item: z.string().min(1).max(100)
     }))
 });

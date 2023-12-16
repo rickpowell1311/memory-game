@@ -23,8 +23,7 @@ export class GameController {
   }
   
   @Put('/:game_id')
-  @UsePipes(new ZodValidationPipe(CompleteGameRequestValidator))
-  async completeGame(@Param() params: { game_id: string }, @Body() body: CompleteGameRequest) {
+  async completeGame(@Param() params: { game_id: string }, @Body(new ZodValidationPipe(CompleteGameRequestValidator)) body: CompleteGameRequest) {
     return await this.completeGameHandler.handle({ ...body, game_id: params.game_id });
   }
 }

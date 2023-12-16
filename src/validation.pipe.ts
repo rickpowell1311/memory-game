@@ -12,5 +12,7 @@ export class ZodValidationPipe implements PipeTransform {
         description: result.error.issues.map(x => x.message).toString()
       } as any);
     }
+
+    return value;
   }
 }
