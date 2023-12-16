@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug in Docker",
+            "name": "Debug",
             "address": "localhost",
             "port": 9229,
             "sourceMaps": true,
