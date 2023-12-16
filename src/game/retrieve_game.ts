@@ -37,7 +37,7 @@ export class RetrieveGameHandler {
         return {
             game_id: entity.id,
             status: entity.game_answers && entity.game_answers.items.length > 0 ? "Completed" : "Started",
-            items: entity.game_answers?.items.map(x => {
+            items: entity.game_items?.items.map(x => {
                 return {
                     order: x.order,
                     item: x.description
