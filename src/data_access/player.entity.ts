@@ -16,8 +16,8 @@ export class PlayerEntity {
         }
 
         return {
-            gamer_tag: player.get_gamer_tag(),
-            high_score: player.get_high_score()
+            gamer_tag: player.getGamerTag(),
+            high_score: player.getHighScore()
         } as PlayerEntity;
     }
 

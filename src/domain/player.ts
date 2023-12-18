@@ -12,7 +12,7 @@ export class Player {
         this.high_score = undefined;
     }
 
-    get_high_score(): number | undefined { return this.high_score; }
+    getHighScore(): number | undefined { return this.high_score; }
 
-    get_gamer_tag(): string { return this.gamer_tag; }
+    getGamerTag(): string { return this.gamer_tag; }
 }

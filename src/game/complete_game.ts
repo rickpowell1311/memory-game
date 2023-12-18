@@ -1,4 +1,4 @@
-import { Inject, NotFoundException } from "@nestjs/common";
+import { Inject, Logger, NotFoundException } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { GameEntity } from "../data_access/game.entity";
 import { PlayerEntity } from "../data_access/player.entity";
@@ -22,12 +22,14 @@ export interface CompleteGameAnswerRequest {
 }
 
 export class CompleteGameHandler {
+    private readonly logger = new Logger(CompleteGameHandler.name);
+
     constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
 
     public async handle(request: CompleteGameRequest): Promise<void> {
         
-        const gameEntity = await this.dataSource.getRepository(GameEntity)
+        let gameEntity = await this.dataSource.getRepository(GameEntity)
             .createQueryBuilder("player")
             .where("id = :id", { id: request.game_id })
             .getOne();
@@ -56,17 +58,21 @@ export class CompleteGameHandler {
         player.recordScore(gameEntity.score ?? 0);
 
         await this.dataSource.transaction(async manager => {
+            gameEntity = GameEntity.mapFromDomain(game);
             manager.createQueryBuilder()
                 .update(GameEntity)
-                .set(GameEntity.mapFromDomain(game))
+                .set(gameEntity)
                 .where("id = :id", { id: game.getId() })
                 .execute();
 
+            playerEntity = PlayerEntity.mapFromDomain(player);
             await manager.createQueryBuilder()
                 .update(PlayerEntity)
-                .set(PlayerEntity.mapFromDomain(player))
-                .where("gamer_tag = :gamer_tag", { gamer_tag: player.get_gamer_tag() })
+                .set(playerEntity)
+                .where("gamer_tag = :gamer_tag", { gamer_tag: player.getGamerTag() })
                 .execute();
         });
+
+        this.logger.log(`Game ${game.getId()} completed for player ${player.getGamerTag()}. The score was ${game.getScore()}, and this player's high score is ${player.getHighScore()}`);
     }
 }

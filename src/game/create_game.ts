@@ -1,5 +1,5 @@
 import { Game } from "../domain/game";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 import { Player } from "../domain/player";
 import { DataSource } from "typeorm";
 import { PlayerEntity } from "../data_access/player.entity";
@@ -15,6 +15,8 @@ export interface CreateGameResponse {
 }
 
 export class CreateGameHandler {
+    private readonly logger = new Logger(CreateGameHandler.name);
+
     constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
 
@@ -29,6 +31,8 @@ export class CreateGameHandler {
 
         await this.dataSource.transaction(async manager => { 
             if (!playerEntity) {
+                this.logger.log(`Player ${request.gamer_tag} does not exist. Creating...`);
+
                 const player = new Player(request.gamer_tag);
 
                 await manager.createQueryBuilder()
@@ -47,6 +51,8 @@ export class CreateGameHandler {
                 .execute();
 
             game_id = gameEntity.id;
+
+            this.logger.log(`Game with Id ${gameEntity.id} created for player ${request.gamer_tag}`);
         });
 
         return {

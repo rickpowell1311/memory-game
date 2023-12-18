@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 import { PlayerEntity } from "../data_access/player.entity";
 import { DataSource } from "typeorm";
 
@@ -7,6 +7,8 @@ export interface ResetHighScoreRequest {
 }
 
 export class ResetHighScoreHandler {
+
+    private readonly logger = new Logger(ResetHighScoreHandler.name);
 
     constructor(@Inject(DataSource) private dataSource: DataSource) {
     }
@@ -30,5 +32,7 @@ export class ResetHighScoreHandler {
             .where("gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
             .set(PlayerEntity.mapFromDomain(player))
             .execute();
+
+        this.logger.log(`High score reset for player ${request.gamer_tag}`);
     }
 }
