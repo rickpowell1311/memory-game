@@ -6,9 +6,9 @@ For this API, I've chosen to take an object-oriented approach. This may not be t
 
 ## Using NestJS
 
-Whilst there are many advantages of using NestJs (it's a well supported and complete framework with good documentation), I also recognise that it can be opinionated and overkill for a simple API such as this. There's a couple of scenarios that I felt it's opinionated nature was a hinderance: In particular, it's modular structure tends to encourage the creation of artificial boundaries between code rather than boundaries that suit the domain in question, and a service oriented architecture that encourage abstractions that are often superfluous. 
+Whilst there are many advantages of using NestJs (it's a well supported and complete framework with good documentation), I also recognise that it can be opinionated and overkill for a simple API such as this. There's a couple of scenarios that I felt it's opinionated nature was a hinderance: In particular, it's modular structure tends to encourage the creation of artificial boundaries between code rather than boundaries that suit the domain in question, and a service oriented architecture that encourages abstractions that are often superfluous. 
 
-However, I decided the framework had many benefits that made it worth while adopting. Apart from the in-built support of OOP and Typescript, it also provides a complete feature set for request/response serialization, validation, ORM integration, database migrations, testing, and configuration - all features that are suitable for development within a business context, where it's ideal that boiler plate code is minimal.
+However, I decided the framework had many benefits that made it worth while adopting. Apart from the in-built support of OOP and Typescript, it also provides a complete feature set for request/response serialization, validation, ORM integration, database migrations, testing, logging and configuration - all features that are suitable for development within a business context, where it's ideal that boiler plate code is minimal.
 
 ## Considering Deno
 
@@ -16,13 +16,11 @@ Given that Deno is a newer runtime that treats Typescript as a first class citiz
 
 ## REPR Pattern & Vertical Slice Architecture
 
-The REPR (Request, Endpoint, Response) pattern is a way of structuring endpoints that promote vertical slice architecture (VSA). From my experience, VSA allows API endpoints to clearly define their contract with the outside world, and also allows for the code to be structured in a way that is easy to maintain and refactor.
-
-This isn't naturally easy to adopt with the Model-View-Controller (MVC) pattern, however defining 
+The REPR (Request, Endpoint, Response) pattern is a way of structuring endpoints that promote vertical slice architecture (VSA). From my experience, VSA allows API endpoints to clearly define their contract with the outside world, and also allows for the code to be structured in a way that is easy to maintain and refactor. If using vanilla Express.js, this pattern is as standard. But with NestJS, it's a more difficult to adopt, because NestJs promotes the Model-View-Controller (MVC) pattern. However, by defining an endpoint request, response and implementation in a single file, the MVC controller becomes a simple router to a REPR implementation, retaining the benefits of VSA.
 
 ## Domain Driven Design
 
-I often choose Domain Driven Design as a default approach for building an API. Even though the domain is relatively simple, I find it's focus on building models that are self-describing is often incredibly helpful in capturing context within code.
+I often choose Domain Driven Design as a default approach for building an API. Even though the domain is relatively simple, I find it's focus on building models that are self-describing and is often incredibly helpful in capturing context within code.
 
 ## Using a relational database
 
