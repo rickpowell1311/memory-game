@@ -50,7 +50,8 @@ describe('GameController', () => {
 
     describe('when completing a game', () => {
       beforeEach(async () => {
-        await controller.completeGame({ game_id }, { game_id: game_id, answers: [{ item: "Whatever", order: 0 }]});
+        let game = await controller.getGame({ game_id });
+        await controller.completeGame({ game_id }, { game_id: game_id, answers: game.items });
       });
 
       it('should have a status of Completed', async () => {
@@ -60,7 +61,8 @@ describe('GameController', () => {
 
       it('should have a score', async () => {
         const response = await controller.getGame({ game_id });
-        expect(response.score).toBeDefined();
+        expect(response.score).toBeDefined()
+        expect(response.score).toBeGreaterThan(0);
       });
 
       it('should set a new high score for the player', async () => {

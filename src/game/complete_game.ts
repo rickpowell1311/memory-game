@@ -55,7 +55,7 @@ export class CompleteGameHandler {
             }
         }));
         let player = playerEntity.mapToDomain();
-        player.recordScore(gameEntity.score ?? 0);
+        player.recordScore(game.getScore() ?? 0);
 
         await this.dataSource.transaction(async manager => {
             gameEntity = GameEntity.mapFromDomain(game);

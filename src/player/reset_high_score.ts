@@ -14,7 +14,7 @@ export class ResetHighScoreHandler {
     }
 
     async handle(request: ResetHighScoreRequest): Promise<void> {
-        const entity = await this.dataSource.getRepository(PlayerEntity)
+        let entity = await this.dataSource.getRepository(PlayerEntity)
             .createQueryBuilder()
             .where("gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
             .getOne();
@@ -26,11 +26,13 @@ export class ResetHighScoreHandler {
         let player = entity.mapToDomain();
         player.resetHighScore();
 
+        entity = PlayerEntity.mapFromDomain(player);
+
         await this.dataSource.getRepository(PlayerEntity)
             .createQueryBuilder()
             .update()
             .where("gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
-            .set(PlayerEntity.mapFromDomain(player))
+            .set(entity)
             .execute();
 
         this.logger.log(`High score reset for player ${request.gamer_tag}`);

@@ -20,7 +20,7 @@ export class RetrievePlayerHandler {
 
     async handle(request: RetrievePlayerRequest): Promise<RetrievePlayerResponse> {
 
-        const entity = await this.dataSource.getRepository(PlayerEntity)
+        let entity = await this.dataSource.getRepository(PlayerEntity)
             .createQueryBuilder("player")
             .where("player.gamer_tag = :gamer_tag", { gamer_tag: request.gamer_tag })
             .getOne();
